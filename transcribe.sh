@@ -1,16 +1,25 @@
 #!/usr/bin/bash
 FILE=""
 MODE=0
-MODEL="medium"
+MODEL="medium" # default model
+
 while getopts "it:s:m:" opt; do
     case $opt in
     i)	MODE=1
         ;;
     t)	FILE=$OPTARG
     	MODE=2
+		if [ ! -f "$FILE" ]; then
+			echo "The input file '$FILE' does not exist."
+			exit 3
+		fi
         ;;
 	s)	FILE=$OPTARG
 		MODE=3
+		if [ ! -f "$FILE" ]; then
+			echo "The input file '$FILE' does not exist."
+			exit 3
+		fi
 		;;
 	m)  MODEL=$OPTARG
 		;;
