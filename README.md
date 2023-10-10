@@ -26,3 +26,5 @@ To split the subtitle format file into multiple files, run the following command
 ```
 
 Run the script with no arguments to see the help message.
+
+Created for [Technologická gramotnost](https://www.technologicka-gramotnost.cz/).
