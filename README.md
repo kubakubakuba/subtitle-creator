@@ -2,7 +2,8 @@
 ## Installation
 For the installation of all dependencies, run the following commands in the terminal:
 ```bash
-git clone
+git clone git@github.com:kubakubakuba/subtitle-creator.git
+cd subtitle-creator
 chmod +x transcribe.sh
 ./transcribe.sh -i
 ```
