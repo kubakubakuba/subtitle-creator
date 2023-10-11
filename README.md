@@ -35,6 +35,7 @@ Run the following command:
 ```
 The process will take a while, the output subtitles file will have the same name as the input audio file.
 The resulting subtitles look like this:
+
 ![subtitles_gif](https://github.com/kubakubakuba/subtitle-creator/assets/13603688/c4342124-2c38-44ed-8020-38fa4c7061d7)
 
 Run the script with no arguments to see the help message.
