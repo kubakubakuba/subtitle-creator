@@ -21,7 +21,7 @@ To transcribe the audio file, run the following command in the terminal:
 ```
 The model type is optional. If not specified, the default model will be set to `medium`. The model types are: `"tiny" "base" "small" "medium" "large"`.
 
-To split the subtitle format file into multiple files, run the following command in the terminal:
+To split the subtitle format file into multiple lines, run the following command in the terminal:
 ```bash
 ./transcribe.sh -s <path/to/file>
 ```
