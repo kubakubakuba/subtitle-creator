@@ -4,7 +4,7 @@ MODE=0
 MODEL="medium" # default model
 OUTPUT="output.aac"
 
-while getopts "it:s:m:e:o:" opt; do
+while getopts "it:s:m:e:o:b:" opt; do
     case $opt in
     i)	MODE=1
         ;;
@@ -26,6 +26,13 @@ while getopts "it:s:m:e:o:" opt; do
 		;;
 	e) 	FILE=$OPTARG
 		MODE=4
+		if [ ! -f "$FILE" ]; then
+			echo "The input file '$FILE' does not exist."
+			exit 3
+		fi
+		;;
+	b) 	FILE=$OPTARG
+		MODE=5
 		if [ ! -f "$FILE" ]; then
 			echo "The input file '$FILE' does not exist."
 			exit 3
@@ -58,10 +65,14 @@ fi
 if [ $MODE -eq 1 ]; then
 	echo "Installing dependencies..."
 	apt install ffmpeg
-	pip install tensorflow
-	pip3 install whisper
-	pip3 install pydub
-	pip3 install pysrt
+	pip3 install --upgrade tensorflow
+	pip3 install --upgrade whisper
+	pip3 install --upgrade pydub
+	pip3 install --upgrade pysrt
+	pip3 instal --upgrade torch
+	pip3 install stable-ts
+	#pip3 install git+https://github.com/jianfch/stable-ts.git
+
 	exit 0
 fi
 
@@ -89,4 +100,18 @@ if [ $MODE -eq 4 ]; then
 	echo "Extracting audio from video..."
 	ffmpeg -i "$FILE" -vn -acodec copy "$OUTPUT"
 	exit $?
+fi
+
+if [ $MODE -eq 5 ]; then
+	echo "Transcribing audio files to clearer subtitles..."
+	valid=("tiny" "base" "small" "medium" "large")
+
+	if [[ " ${valid[*]} " == *" $MODEL "* ]]; then
+    	stable-ts "$FILE" -o "${FILE%.mp3}.srt" -m "$MODEL"
+	else
+		echo "The input model '$MODEL' is not a valid model type."
+		exit 2
+	fi
+
+	exit 0
 fi
