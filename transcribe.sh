@@ -81,7 +81,7 @@ if [ $MODE -eq 2 ]; then
 	valid=("tiny" "base" "small" "medium" "large")
 
 	if [[ " ${valid[*]} " == *" $MODEL "* ]]; then
-    	whisper "$FILE" --model "$MODEL" --language Czech
+    	whisper "$FILE" --model "$MODEL"
 	else
 		echo "The input model '$MODEL' is not a valid model type."
 		exit 2
