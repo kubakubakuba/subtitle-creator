@@ -23,11 +23,6 @@ To transcribe the audio file, run the following command in the terminal:
 ```
 The model type is optional. If not specified, the default model will be set to `medium`. The model types are: `"tiny" "base" "small" "medium" "large"`.
 
-To split the subtitle format file into multiple lines, run the following command in the terminal:
-```bash
-./transcribe.sh -s <path/to/file>
-```
-
 ### Better transcription using stable-ts
 Run the following command:
 ```bash
@@ -37,6 +32,11 @@ The process will take a while, the output subtitles file will have the same name
 The resulting subtitles look like this:
 
 ![subtitles_gif](https://github.com/kubakubakuba/subtitle-creator/assets/13603688/c4342124-2c38-44ed-8020-38fa4c7061d7)
+
+To split the subtitle file into single words, run the following command in the terminal:
+```bash
+./transcribe.sh -p <path/to/srt/file>
+```
 
 Run the script with no arguments to see the help message.
 
