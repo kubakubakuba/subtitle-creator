@@ -1,36 +1,28 @@
-import pysrt
-from pydub import AudioSegment
+import re
 import sys
 
-subs = pysrt.open(sys.argv[1].replace('.mp3', '.srt'))
-audio = AudioSegment.from_mp3(sys.argv[1])
+def extract_subs(input_file):
+    subs = []
+    with open(input_file, 'r') as f:
+        lines = f.readlines()
+        for line in lines:
+            matches = re.findall(r'(\d{2}:\d{2}:\d{2},\d{3}) --> (\d{2}:\d{2}:\d{2},\d{3})[^<]+<font color="#[a-f0-9]{6}">([^<]+)<\/font>', line)
+            for match in matches:
+                subs.append(match)
+    return subs
 
-transcript_segments = []
-for sub in subs:
-    start_time = (sub.start.minutes * 60 + sub.start.seconds) * 1000 + sub.start.milliseconds
-    end_time = (sub.end.minutes * 60 + sub.end.seconds) * 1000 + sub.end.milliseconds
-    transcript_segments.append((start_time, end_time, sub.text))
+def write_subs(subs, output_file):
+    with open(output_file, 'w') as f:
+        for idx, sub in enumerate(subs):
+            f.write(str(idx))
+            f.write('\n')
+            f.write(f"{sub[0]} --> {sub[1]}")
+            f.write('\n')
+            f.write(sub[2])
+            f.write('\n')
+            f.write('\n')
 
-from pydub.silence import split_on_silence
+subs = extract_subs(sys.argv[1])
 
-refined_subs = []
-for start, end, text in transcript_segments:
-    segment_audio = audio[start:end]
-    chunks = split_on_silence(segment_audio, silence_thresh=-40, min_silence_len=300)
-    
-    new_start = start
-    for chunk in chunks:
-        new_end = new_start + len(chunk)
-        refined_subs.append((new_start, new_end, text))
-        new_start = new_end
+write_subs(subs, sys.argv[1])
 
-new_subs = pysrt.SubRipFile()
-for i, (start, end, text) in enumerate(refined_subs):
-    item = pysrt.SubRipItem()
-    item.index = i
-    item.start.seconds = start // 1000
-    item.end.seconds = end // 1000
-    item.text = text
-    new_subs.append(item)
-    
-new_subs.save('new_file.srt')

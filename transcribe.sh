@@ -4,7 +4,7 @@ MODE=0
 MODEL="medium" # default model
 OUTPUT="output.aac"
 
-while getopts "it:s:m:e:o:b:" opt; do
+while getopts "it:p:m:e:o:b:" opt; do
     case $opt in
     i)	MODE=1
         ;;
@@ -15,7 +15,7 @@ while getopts "it:s:m:e:o:b:" opt; do
 			exit 3
 		fi
         ;;
-	s)	FILE=$OPTARG
+	p)	FILE=$OPTARG
 		MODE=3
 		if [ ! -f "$FILE" ]; then
 			echo "The input file '$FILE' does not exist."
@@ -43,7 +43,7 @@ while getopts "it:s:m:e:o:b:" opt; do
     ?)	echo "Incorrect argument entered."
 		echo "Use -i for installing the dependencies."
 		echo "Use -t for transcribing the audio files."
-		echo "Use -s for splitting the srt files."
+		echo "Use -p for processing the srt files."
 		echo "Use -m for selecting the model type."
 		echo "Use -e to extract the audio from the video."
 		echo "Use -o to select the output file name."
@@ -56,7 +56,7 @@ if [ $MODE -eq 0 ]; then
 	echo "No mode selected."
 	echo "Use -i for installing the dependencies."
 	echo "Use -t for transcribing the audio files."
-	echo "Use -s for splitting the srt files."
+	echo "Use -p for processing the srt files."
 	echo "Use -e to extract the audio from the video."
 	echo "Use -o to select the output file name."
 	exit 1
@@ -91,8 +91,10 @@ if [ $MODE -eq 2 ]; then
 fi
 
 if [ $MODE -eq 3 ]; then
-	echo "Splitting srt files..."
-	python3 split.py "$FILE"
+	echo "Processing srt files..."
+	tr '\n' ' ' < "$FILE" > "$FILE.tmp"
+	python3 split.py "$FILE.tmp"
+	mv "$FILE.tmp" "${FILE%.srt}_processed.srt"
 	exit 0
 fi
 
