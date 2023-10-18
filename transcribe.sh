@@ -109,7 +109,9 @@ if [ $MODE -eq 5 ]; then
 	valid=("tiny" "base" "small" "medium" "large")
 
 	if [[ " ${valid[*]} " == *" $MODEL "* ]]; then
-    	stable-ts "$FILE" -o "${FILE%.mp3}.srt" -m "$MODEL"
+    	#stable-ts "$FILE" -o "${FILE%.mp3}.srt" -m "$MODEL"
+		#python3 transcribe.py "$MODEL" "$FILE"
+		echo 'Open transcribe.py and run it.'
 	else
 		echo "The input model '$MODEL' is not a valid model type."
 		exit 2
