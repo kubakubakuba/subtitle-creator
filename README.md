@@ -15,7 +15,7 @@ Firstly, extract an audio from the video file. To do this, run the following com
 ```
 The output file name is optional. If not specified, the output file will be named by a default name.
 
-### Base whisper
+### Old Version
 
 To transcribe the audio file, run the following command in the terminal:
 ```bash
@@ -35,9 +35,32 @@ The resulting subtitles look like this:
 
 To split the subtitle file into single words, run the following command in the terminal:
 ```bash
-python3 split.py <path/to/srt/file>
+./transcribe.sh -p <path/to/srt/file>
 ```
-
 Run the script with no arguments to see the help message.
+
+##New Version
+Edit the source file `transcribe.py` to your desired model size and input/output file specification. Then simply run it.
+```python
+import stable_whisper
+
+model = stable_whisper.load_model('medium')
+
+result = model.transcribe('output.aac', regroup=False)
+(
+    result
+    .clamp_max()
+    .split_by_punctuation([('.', ' '), '。', '?', '？', (',', ' '), '，'])
+    .split_by_gap(.5)
+    .merge_by_gap(.3, max_words=3)
+	.split_by_length(15)
+    .split_by_punctuation([('.', ' '), '。', '?', '？'])
+)
+
+model.refine('output.aac', result)
+
+result.to_srt_vtt('audio.srt')
+```
+Not paramatrized yet for command line usage, but provides better output, while having faster processing time.
 
 Created for [Technologická gramotnost](https://www.technologicka-gramotnost.cz/).
