@@ -35,7 +35,7 @@ The resulting subtitles look like this:
 
 To split the subtitle file into single words, run the following command in the terminal:
 ```bash
-./transcribe.sh -p <path/to/srt/file>
+python3 split.py <path/to/srt/file>
 ```
 
 Run the script with no arguments to see the help message.
