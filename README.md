@@ -39,7 +39,7 @@ To split the subtitle file into single words, run the following command in the t
 ```
 Run the script with no arguments to see the help message.
 
-##New Version
+## New Version
 Edit the source file `transcribe.py` to your desired model size and input/output file specification. Then simply run it.
 ```python
 import stable_whisper
