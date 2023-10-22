@@ -61,6 +61,6 @@ model.refine('input.aac', result)
 
 result.to_srt_vtt('subtitles.srt')
 ```
-Not paramatrized yet for command line usage, but provides better output, while having faster processing time.
+Not paramatrized for command line usage yet, but provides better output, while having faster processing time.
 
 Created for [Technologická gramotnost](https://www.technologicka-gramotnost.cz/).
