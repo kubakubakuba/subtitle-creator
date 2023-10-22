@@ -46,20 +46,20 @@ import stable_whisper
 
 model = stable_whisper.load_model('medium')
 
-result = model.transcribe('output.aac', regroup=False)
+result = model.transcribe('input.aac', regroup=False)
 (
     result
     .clamp_max()
     .split_by_punctuation([('.', ' '), '。', '?', '？', (',', ' '), '，'])
     .split_by_gap(.5)
     .merge_by_gap(.3, max_words=3)
-	.split_by_length(15)
+    .split_by_length(15)
     .split_by_punctuation([('.', ' '), '。', '?', '？'])
 )
 
-model.refine('output.aac', result)
+model.refine('input.aac', result)
 
-result.to_srt_vtt('audio.srt')
+result.to_srt_vtt('subtitles.srt')
 ```
 Not paramatrized yet for command line usage, but provides better output, while having faster processing time.
 
